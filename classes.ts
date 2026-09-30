@@ -11,8 +11,6 @@ Important: If you use LLMs that’s ok, but you must share the conversations.
 
 /* Flow:
 
-We will use CQRS to separate write operations and update read states.
-
 1. There is a PortFolio with different stock types, each with a quantity and a current price.
 2. When a new "current price" is published, the Portfolio will update the corresponding stock using the rebalance method. 
 This means the "current price" is actually a stock, and that there is a stock history.
@@ -74,14 +72,11 @@ class Portfolio {
         // 9. Update the "action" field of each stock in the portfolio with the calculated action.
 
         this.stocks.forEach(stock => {
-            if (stock.targetAllocation !== null && stock.quantity !== null) {
-                const portfolioCurrentValue = this.stocks.reduce((sum, s) => sum + (s.price * (s.quantity || 0)), 0);
-                const targetValue = portfolioCurrentValue * (stock.targetAllocation / 100);
-                const currentValue = stock.price * stock.quantity;
-                stock.action = (targetValue - currentValue) / stock.price;
-            } else {
-                stock.action = 0; // If target allocation or quantity is not set, we cannot calculate action.
-            }
+            
+            const portfolioCurrentValue = this.stocks.reduce((sum, s) => sum + (s.price * (s.quantity || 0)), 0);
+            const targetValue = portfolioCurrentValue * (stock.targetAllocation / 100);
+            const currentValue = stock.price * stock.quantity;
+            stock.action = (targetValue - currentValue) / stock.price;
         });
     }
 }
