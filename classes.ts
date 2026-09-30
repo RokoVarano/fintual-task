@@ -102,8 +102,8 @@ class Stock {
         this.targetAllocation = targetAllocation || 0;
         this.action = 0;
 
-        if (this.price < 0) {
-            throw new Error(`Price cannot be negative. Current price: ${this.price}`);
+        if (this.price <= 0) {
+            throw new Error(`Price cannot be negative or zero. Current price: ${this.price}`);
         }
 
         if (this.quantity < 0) {
@@ -117,7 +117,6 @@ class Stock {
 
     currentPrice(): {name: string, price: number} {
         // Asks for the current price of the stock. This is a read-only operation, and it does not change the state of the stock.
-        // This is never used in this task really. I imagine it would need to be implemented if I got the current price from an external API.
         return {name: this.name, price: this.price};
     }
 }
